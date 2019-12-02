@@ -1,0 +1,34 @@
+<!Doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            
+                <form action="" method="POST">
+                    <!-- form for add page -->
+                    <div class="form-group"  >
+                        <h2>Add new CD Info:</h2>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <label for="post_title">Title</label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter title:"  value="" required>
+                        <label for="author_name">Artist</label>
+                        <input type="text" name="artist" class="form-control" placeholder="Enter artist name" value="" required>
+                        <label for="author_name">Country</label>
+                        <input type="text" name="country" class="form-control" placeholder="Enter country name" value="" required>
+                        <label for="author_name">Label</label>
+                        <input type="text" name="label" class="form-control" placeholder="Enter label"  value="" required>
+                        <br>
+                        <label for="author_name">Year</label>
+                        <input type="text" name="year" class="form-control" placeholder="Enter year"  value="" required>
+                        <br>
+                        <input type="submit" value="Save" class="btn btn-success">
+                    </div>
+                </form>
+            
+        </div>
+    </body>
+    <script>
+    </script>
+</html>

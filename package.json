@@ -1,0 +1,25 @@
+{
+  "name": "cd-catalog",
+  "version": "1.0.0",
+  "description": "CRUD application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "devstart": "nodemon server.js"
+  },
+  "author": "Bruno",
+  "license": "ISC",
+  "dependencies": {
+    "commonjs-utils": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "csurf": "^1.10.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "http-errors": "^1.7.3",
+    "node-modules": "^1.0.1",
+    "nodemon": "^2.0.1"
+  }
+}
