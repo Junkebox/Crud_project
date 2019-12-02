@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <title>CD Catalog</title>
+    <head>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <!-- navigation bar -->
+        <nav class="navbar navbar-expand bg-dark navbar-dark">
+            <img class="navbar-brand" src="/img/logo.jpg">
+            <label id="logo">Welcome to our CD shop.</label>
+            <ul class="navbar-nav navbar-right" >
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><span></span>Sign Up</a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+            </ul>
+        </nav>
+        <!-- main content -->
+        <div class="row">
+            <div class="col-sm-2">
+                <br>
+                <label>Studio Name</label>
+                <br>
+                <br>
+                <ul class="nav nav-pills flex-column" role="tablist" style="margin-left: 20px">
+                    <li class="nav-item">
+                        <a class="nav-link active"  style="font-weight: bold;"  id="album" data-toggle="pill" href="#home">Album Studio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="remixs" data-toggle="pill" id="remix" href="#menu1">Remix Studio</a>
+                    </li>
+                </ul>
+            </div>    
+            <div class="col-sm-10">
+                <div class="tab-content">
+                    <br>
+                    <a href="/add?studioname=1"  style="margin-left: 18px; border-radius: 7px; background-color: #4CAF50;" type = 'button' id="addlink" class= "btn btn-info">Add new CD.</a><br>
+                    <div id="home" class="container tab-pane active"><br>
+                        <table class="table table-bordered" >
+                            <tr class="thead-light">
+                                <th>Title</th>
+                                <th>Artist</th>
+                                <th>Country</th>
+                                <th>Label</th>
+                                <th>Year</th>   
+                                <th>Action</th>
+                            </tr>
+                            <!-- table content -->
+                            <tbody id='cd-list1'>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="menu1" class="container tab-pane fade"><br>
+                        <table class="table table-bordered" >
+                            <tr class="thead-light">
+                                <th>Title</th>
+                                <th>Artist</th>
+                                <th>Country</th>
+                                <th>Label</th>
+                                <th>Year</th>
+                                <th>Action</th>
+                            </tr>
+                            <tbody id='cd-list2'>
+                            </tbody>
+                        </table>       
+                    </div>          
+                </div> 
+            </div>
+        </div>    
+    </body>
+    <script>
+        //convert json data into use for ejs file
+        var contents = <%- JSON.stringify(contents) %>
+    </script>
+    
+    <script src="/javascript/jquery.min.js"></script>
+    <script src="/javascript/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</html>
