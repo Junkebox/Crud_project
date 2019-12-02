@@ -149,11 +149,5 @@ app.listen(port, error => {
   console.log('Server running on port ' + port);
 });
 
-function findAndRemove(array, property, value) {
-  array.forEach(function(result, index) {
-    if(result[property] === value) {
-      //Remove from array
-      array.splice(index, 1);
-    }    
-  });
+
 }
