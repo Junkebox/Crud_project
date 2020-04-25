@@ -11,6 +11,16 @@ var csrfProtection = csrf({ cookie: true })
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://admin:admin123!@cluster0-svyfn.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  console.log('Connected to mongobd');
+  client.close();
+});
+
 app.use(cookieParser());
 // EJS view template engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -150,4 +160,4 @@ app.listen(port, error => {
 });
 
 
-}
+
