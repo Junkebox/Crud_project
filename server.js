@@ -12,14 +12,10 @@ var csrfProtection = csrf({ cookie: true })
 const app = express();
 const port = process.env.PORT || 3000;
 
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://admin:admin123!@cluster0-svyfn.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  console.log('Connected to mongobd');
-  client.close();
-});
+const db = require("./db");
+const dbName = "CD-Shop";
+const collectionName = "AlbumStudio";
+
 
 app.use(cookieParser());
 // EJS view template engine setup
@@ -33,14 +29,40 @@ app.use(helmet());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  var contents;
-  fs.readFile('CD-Data.json', (err, data) => {
-    if (err) throw err;
-    contents = JSON.parse(data);
-    res.render('index', {contents: contents});
-  });
+db.initialize(dbName, collectionName, function(dbCollection) { // successCallback
+    // get all items
+    app.get('/', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    dbCollection.find().toArray(function(err, result) {
+        if (err) throw err;
+        console.log(JSON.stringify(result));
+        res.render('index', {contents:JSON.stringify(result)});
+       
+  
+    });
 });
+   
+
+    app.post("/add", csrfProtection, (request, response) => {
+    const item = request.body;
+    dbCollection.insertOne(item, (error, result) => { // callback of insertOne
+        if (error) throw error;
+        // return updated list
+        dbCollection.find().toArray((_error, _result) => { // callback of find
+            if (_error) throw _error;
+            
+        });
+    });
+
+      response.redirect('/');
+
+});
+
+}, function(err) { // failureCallback
+    throw (err);
+});
+
+
 
 app.get('/delete/:id', (req, res) => {
   var rawdata = fs.readFileSync('CD-Data.json');
@@ -132,7 +154,7 @@ app.get('/add', csrfProtection,(req, res) => {
   res.render('add',{ csrfToken: req.csrfToken() });
 });
 
-app.post('/add', csrfProtection,(req, res) => {
+/*app.post('/add', csrfProtection,(req, res) => {
   var addcontent = {title:'',artist:'',country:'',label:'',year:''};
 
   addcontent.title = req.body.title;
@@ -153,7 +175,7 @@ app.post('/add', csrfProtection,(req, res) => {
   fs.writeFileSync('CD-Data.json', data);
   res.redirect('/');
 });
-
+*/
 app.listen(port, error => {
   if (error) throw error;
   console.log('Server running on port ' + port);

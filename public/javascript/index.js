@@ -3,7 +3,7 @@ $(document).ready(function () {
     // inserting content into table
     var trElement, tdElement;
 
-    contents.AlbumStudio.forEach(function(item) {
+    contents.forEach(function(item) {
 
         trElement = $("<tr id='"+item.title+"'>"+"</tr>");
         tdElement = $("<td></td>").text(item.title);
