@@ -101,27 +101,25 @@ app.post('/update/:id', csrfProtection, (req, res) => {
   
 });
 
+app.get('/delete/:id', (req, res) => {
+ const itemId = req.params.id;
 
+    dbCollection.deleteOne({ _id: new ObjectId(itemId) }, function(error, result) {
+        if (error) throw error;
+        // send back entire updated list after successful request
+        dbCollection.find().toArray(function(_error, _result) {
+            if (_error) throw _error;
+            res.redirect('/');
+        });
+    });
+});
 }, function(err) { // failureCallback
     throw (err);
 });
 
 
 
-app.get('/delete/:id', (req, res) => {
-  var rawdata = fs.readFileSync('CD-Data.json');
-  var student = JSON.parse(rawdata);
-  var urlname = url.parse(req.url,true).query;
 
-  if(urlname.studioname == 1) 
-    findAndRemove(student.AlbumStudio,'title',req.params.id);
-  else 
-    findAndRemove(student.RemixAlbum,'title',req.params.id);
-
-  let data = JSON.stringify(student);
-  fs.writeFileSync('CD-Data.json', data);
-  res.redirect('/');
-});
 
 
 
@@ -131,28 +129,7 @@ app.get('/add', csrfProtection,(req, res) => {
   res.render('add',{ csrfToken: req.csrfToken() });
 });
 
-/*app.post('/add', csrfProtection,(req, res) => {
-  var addcontent = {title:'',artist:'',country:'',label:'',year:''};
 
-  addcontent.title = req.body.title;
-  addcontent.artist = req.body.artist;
-  addcontent.country = req.body.country;
-  addcontent.label = req.body.label;
-  addcontent.year = req.body.year;
-
-  var rawdata = fs.readFileSync('CD-Data.json');
-  var student = JSON.parse(rawdata);
-
-  if(updatepath == 1)
-    student.AlbumStudio.unshift(addcontent);
-  else 
-    student.RemixAlbum.unshift(addcontent);
-
-  let data = JSON.stringify(student);
-  fs.writeFileSync('CD-Data.json', data);
-  res.redirect('/');
-});
-*/
 app.listen(port, error => {
   if (error) throw error;
   console.log('Server running on port ' + port);

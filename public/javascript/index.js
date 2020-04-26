@@ -21,7 +21,7 @@ $(document).ready(function () {
         tdElement = $("<td></td>").text(item.year);
         trElement.append(tdElement);
 
-        tdElement = $("<td></td>").html("<a href='/delete/"+item.title+"?studioname=1'>" +"<img src='img/delete.jpg'></a>"+"<span style='display:inline-block; width: 15px;'></span><a href='/update/"+item._id+"?studioname=1'>" +"<img src='img/edit.png'></a>");
+        tdElement = $("<td></td>").html("<a href='/delete/"+item._id+"?studioname=1'>" +"<img src='img/delete.jpg'></a>"+"<span style='display:inline-block; width: 15px;'></span><a href='/update/"+item._id+"?studioname=1'>" +"<img src='img/edit.png'></a>");
         trElement.append(tdElement);
 
         $('#cd-list1').append(trElement);
