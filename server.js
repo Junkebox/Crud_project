@@ -16,6 +16,8 @@ const db = require("./db");
 const dbName = "CD-Shop";
 const collectionName = "AlbumStudio";
 
+var mongodb = require('mongodb');
+var ObjectId = mongodb.ObjectID;
 
 app.use(cookieParser());
 // EJS view template engine setup
@@ -57,6 +59,48 @@ db.initialize(dbName, collectionName, function(dbCollection) { // successCallbac
       response.redirect('/');
 
 });
+var updatepath;
+
+app.get('/update/:id', csrfProtection,(req, res) => {
+  const edit_postId = req.params.id;
+  console.log(req.params.id);
+  // FIND POST BY ID
+  var content = {};
+  var urlpath = url.parse(req.url,true).query;
+
+ 
+    updatepath = urlpath.studioname;
+     dbCollection.findOne({ _id: new ObjectId(edit_postId) }, (error, result) => {
+        if (error) throw error;
+        // return item
+       
+        
+          res.render('edit',{ csrfToken: req.csrfToken(),content : result});
+
+    }); 
+    
+  console.log(content);
+  
+});
+
+app.post('/update/:id', csrfProtection, (req, res) => {
+   const itemId = req.params.id;
+    const item = req.body;
+    console.log("Editing item: ", itemId, " to be ", item);
+
+    dbCollection.updateOne({  _id: new ObjectId(itemId)  }, { $set: item }, (error, result) => {
+        if (error) throw error;
+        // send back entire updated list, to make sure frontend data is up-to-date
+        dbCollection.find().toArray(function(_error, _result) {
+            if (_error) throw _error;
+            res.redirect('/');
+        });
+    });
+ 
+
+  
+});
+
 
 }, function(err) { // failureCallback
     throw (err);
@@ -79,74 +123,7 @@ app.get('/delete/:id', (req, res) => {
   res.redirect('/');
 });
 
-var updatepath;
 
-app.get('/update/:id', csrfProtection,(req, res) => {
-  const edit_postId = req.params.id;
-  // FIND POST BY ID
-  var content = {title:'',artist:'',country:'',label:'',year:''};
-  var rawdata = fs.readFileSync('CD-Data.json');
-  var student = JSON.parse(rawdata);
-  var urlpath = url.parse(req.url,true).query;
-
-  if(urlpath.studioname == 1){
-    updatepath = urlpath.studioname;
-    student.AlbumStudio.forEach(function(item) {
-      if(item.title == req.params.id) {
-        content.title = item.title;
-        content.artist = item.artist;
-        content.country = item.country;
-        content.label = item.label;
-        content.year = item.year;
-      }
-    }); 
-  }
-  else {
-    updatepath = urlpath.studioname;
-    student.RemixAlbum.forEach(function(item) {
-      if(item.title == req.params.id) {
-        content.title = item.title;
-        content.artist = item.artist;
-        content.country = item.country;
-        content.label = item.label;
-        content.year = item.year;
-      }
-    });
-  }
-  res.render('edit',{ csrfToken: req.csrfToken(),content : content});
-});
-
-app.post('/update/:id', csrfProtection, (req, res) => {
-  var rawdata = fs.readFileSync('CD-Data.json');
-  var student = JSON.parse(rawdata);
-
-  if(updatepath == 1){ 
-    student.AlbumStudio.forEach(function(item) {
-      if(item.title == req.params.id){
-        item.title = req.body.title;
-        item.artist = req.body.artist;
-        item.country = req.body.country;
-        item.label = req.body.label;
-        item.year = req.body.year;
-      }
-    });
-  }
-  else {
-    student.RemixAlbum.forEach(function(item) {
-      if(item.title == req.params.id){
-        item.title = req.body.title;
-        item.artist = req.body.artist;
-        item.country = req.body.country;
-        item.label = req.body.label;
-        item.year = req.body.year;
-      }
-    });
-  }
-
-  let data = JSON.stringify(student);
-  fs.writeFileSync('CD-Data.json', data);
-  res.redirect('/');
-});
 
 app.get('/add', csrfProtection,(req, res) => {
   var data = url.parse(req.url,true).query;
